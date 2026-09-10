@@ -10,11 +10,7 @@ public static class ManifestValidator
 
     public static void Validate(Manifest manifest)
     {
-        GameRelease? game = manifest.Game;
-        if (game == null)
-        {
-            throw new InvalidDataException("Manifest has no game section.");
-        }
+        GameRelease game = manifest.Game;
         if (game.Version.Length == 0)
         {
             throw new InvalidDataException("Manifest has no game version.");

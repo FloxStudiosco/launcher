@@ -1,0 +1,167 @@
+<Window x:Class="FloxStudios.Launcher.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:FloxStudios.Launcher.App"
+        Title="Kintsugi" Width="1240" Height="780"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" UseLayoutRounding="True"
+        FontFamily="{StaticResource TextFont}" Foreground="{StaticResource InkBrush}">
+
+    <Grid Margin="24">
+        <Border CornerRadius="16" Background="{StaticResource PaperBrush}">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="28" ShadowDepth="4" Direction="270" Opacity="0.28" />
+            </Border.Effect>
+        </Border>
+
+        <Border CornerRadius="16" Background="{StaticResource PaperBrush}" MouseLeftButtonDown="OnDragArea">
+            <Grid Margin="54,34,46,30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Row="0" LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                        <local:SpacedText Text="KINTSUGI" FontSize="19" Spacing="6" VerticalAlignment="Center" />
+                        <Ellipse Width="3" Height="3" Margin="20,0" Fill="{StaticResource MutedBrush}" VerticalAlignment="Center" />
+                        <local:SpacedText Text="BETA" FontSize="12" Spacing="3.5" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <Button Style="{StaticResource WindowButton}" Click="OnMinimizeClick" ToolTip="Свернуть">
+                            <Path Data="M0,0 H18" Stroke="{StaticResource InkBrush}" StrokeThickness="1.4" />
+                        </Button>
+                        <Button Style="{StaticResource WindowButton}" Click="OnCloseClick" Margin="22,0,0,0" ToolTip="Закрыть">
+                            <Path Data="M0,0 L16,16 M16,0 L0,16" Stroke="{StaticResource InkBrush}" StrokeThickness="1.4" />
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+
+                <Grid Grid.Row="1" Margin="0,34,0,34">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="56*" />
+                        <ColumnDefinition Width="44*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" CornerRadius="12">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#C9BBA6" Offset="0" />
+                                <GradientStop Color="#8E7A63" Offset="0.55" />
+                                <GradientStop Color="#4A3C30" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid>
+                            <Border CornerRadius="12">
+                                <Border.Background>
+                                    <ImageBrush x:Name="CoverBrush" Stretch="UniformToFill" />
+                                </Border.Background>
+                            </Border>
+                            <Border CornerRadius="0,0,12,12" VerticalAlignment="Bottom" Height="200">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#00000000" Offset="0" />
+                                        <GradientStop Color="#99000000" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                            </Border>
+                            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="32,0,0,28">
+                                <local:SpacedText Text="РАЗБИТЫЕ ВЕЩИ" FontSize="11.5" Spacing="3" Foreground="#EEFFFFFF" Margin="0,0,0,5" />
+                                <local:SpacedText Text="ТОЖЕ РАССКАЗЫВАЮТ" FontSize="11.5" Spacing="3" Foreground="#EEFFFFFF" Margin="0,0,0,5" />
+                                <local:SpacedText Text="ИСТОРИИ" FontSize="11.5" Spacing="3" Foreground="#EEFFFFFF" />
+                                <Rectangle Width="42" Height="1" Margin="0,18,0,0" HorizontalAlignment="Left" Fill="#B4FFFFFF" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="84,0,8,0">
+                        <local:SpacedText Text="KINTSUGI" FontFamily="{StaticResource DisplayFont}" FontSize="58" Spacing="17"
+                                          HorizontalAlignment="Center" />
+                        <local:SpacedText Text="СОБИРАЙ  •  ВДОХНОВЛЯЙСЯ  •  СОХРАНЯЙ" FontSize="11.5" Spacing="3"
+                                          Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" Margin="0,22,0,0" />
+
+                        <Button x:Name="PlayButton" Style="{StaticResource PrimaryButton}" Margin="0,72,0,0" Click="OnPlayClick">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="M0,0 L18,11 L0,22 Z" Fill="White" VerticalAlignment="Center" />
+                                <local:SpacedText Text="Играть" FontSize="21" Spacing="1.5" Margin="30,0,0,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="SecondaryButton" Style="{StaticResource OutlineButton}" Margin="0,22,0,0" Click="OnSecondaryClick">
+                            <StackPanel Orientation="Horizontal">
+                                <Path x:Name="SecondaryIcon" Data="M10,0 V14 M4,8.5 L10,14.5 L16,8.5 M1,17 V21 H19 V17"
+                                      Stroke="{StaticResource InkBrush}" StrokeThickness="1.7" VerticalAlignment="Center" />
+                                <local:SpacedText x:Name="SecondaryLabel" Text="Скачать" FontSize="20" Spacing="1.5"
+                                                  Margin="30,0,0,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                        <local:SpacedText x:Name="StatusText" FontSize="11" Spacing="2.5" Foreground="{StaticResource MutedBrush}"
+                                          HorizontalAlignment="Center" Margin="0,24,0,0" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="SettingsSheet" Grid.Row="1" Margin="0,34,0,34" Background="{StaticResource PaperBrush}" Visibility="Collapsed">
+                    <StackPanel MaxWidth="620" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <local:SpacedText Text="НАСТРОЙКИ" FontSize="15" Spacing="5" />
+                        <local:SpacedText Text="ПАПКА ИГРЫ" FontSize="11" Spacing="2.5" Foreground="{StaticResource MutedBrush}" Margin="0,40,0,8" />
+                        <TextBlock x:Name="InstallPathText" FontSize="14" TextWrapping="Wrap" />
+                        <StackPanel Orientation="Horizontal" Margin="0,28,0,0">
+                            <Button Style="{StaticResource OutlineButton}" Height="54" Width="260" Click="OnOpenFolderClick">
+                                <local:SpacedText Text="Открыть папку" FontSize="15" Spacing="1" />
+                            </Button>
+                            <Button x:Name="VerifyButton" Style="{StaticResource OutlineButton}" Height="54" Width="260" Margin="18,0,0,0" Click="OnVerifyClick">
+                                <local:SpacedText Text="Проверить файлы" FontSize="15" Spacing="1" />
+                            </Button>
+                        </StackPanel>
+                        <TextBlock Text="Проверка заново сверяет каждый файл игры с сервером и докачивает повреждённые."
+                                   FontSize="13" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Margin="0,14,0,0" />
+                        <Button Style="{StaticResource LinkButton}" Margin="0,40,0,0" HorizontalAlignment="Left" Click="OnSheetCloseClick">
+                            <local:SpacedText Text="← НАЗАД" FontSize="11.5" Spacing="3" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="AboutSheet" Grid.Row="1" Margin="0,34,0,34" Background="{StaticResource PaperBrush}" Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <local:SpacedText Text="ОБ ИГРЕ" FontSize="15" Spacing="5" />
+                        <TextBlock FontSize="14" TextWrapping="Wrap" MaxWidth="760" HorizontalAlignment="Left" Margin="0,24,0,0"
+                                   Text="Kintsugi — игра о том, как собрать разбитую вазу и сделать её трещины частью истории. Это закрытая бета: спасибо, что играете и присылаете отзывы." />
+                        <local:SpacedText Text="ЧТО НОВОГО" FontSize="11" Spacing="2.5" Foreground="{StaticResource MutedBrush}" Margin="0,36,0,12" />
+                    </StackPanel>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxWidth="760" HorizontalAlignment="Left">
+                        <TextBlock x:Name="ChangelogText" FontSize="13.5" TextWrapping="Wrap" LineHeight="21"
+                                   Text="Список изменений появится после первой проверки обновлений." />
+                    </ScrollViewer>
+                    <DockPanel Grid.Row="2" Margin="0,20,0,0" LastChildFill="False">
+                        <Button Style="{StaticResource LinkButton}" DockPanel.Dock="Left" Click="OnSheetCloseClick">
+                            <local:SpacedText Text="← НАЗАД" FontSize="11.5" Spacing="3" />
+                        </Button>
+                        <local:SpacedText x:Name="LauncherVersionText" DockPanel.Dock="Right" FontSize="11" Spacing="2"
+                                          Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center" />
+                    </DockPanel>
+                </Grid>
+
+                <DockPanel Grid.Row="2" LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <Button Style="{StaticResource LinkButton}" Click="OnSettingsClick">
+                            <local:SpacedText Text="НАСТРОЙКИ" FontSize="11.5" Spacing="3" />
+                        </Button>
+                        <Rectangle Width="1" Height="12" Margin="24,0" Fill="{StaticResource LineBrush}" VerticalAlignment="Center" />
+                        <Button Style="{StaticResource LinkButton}" Click="OnAboutClick">
+                            <local:SpacedText Text="ОБ ИГРЕ" FontSize="11.5" Spacing="3" />
+                        </Button>
+                    </StackPanel>
+                    <local:SpacedText x:Name="VersionText" DockPanel.Dock="Right" FontSize="11.5" Spacing="1.5"
+                                      Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center" />
+                </DockPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

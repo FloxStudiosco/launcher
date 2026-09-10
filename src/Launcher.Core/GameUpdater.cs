@@ -21,9 +21,9 @@ public sealed class GameUpdater
         _layout = layout;
     }
 
-    public UpdatePlan Plan(Manifest manifest)
+    public UpdatePlan Plan(Manifest manifest, bool verifyAll = false)
     {
-        InstalledState? state = InstalledStateStore.Load(_layout);
+        InstalledState? state = verifyAll ? null : InstalledStateStore.Load(_layout);
         Dictionary<string, InstalledFile> local = LocalScanner.Scan(_layout, state);
         return UpdatePlanner.Plan(manifest, local);
     }

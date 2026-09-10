@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>FloxStudios.Launcher.App</RootNamespace>
+    <AssemblyName>FloxLauncher</AssemblyName>
+    <Version>0.1.0</Version>
+    <LauncherReleaseUrl Condition="'$(LauncherReleaseUrl)' == ''"></LauncherReleaseUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Launcher.Core\**\*.cs" Exclude="..\Launcher.Core\obj\**;..\Launcher.Core\bin\**" Link="Core\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="LauncherReleaseUrl" Value="$(LauncherReleaseUrl)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

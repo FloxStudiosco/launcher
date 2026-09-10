@@ -11,7 +11,8 @@
 - **`Launcher.Core`** — вся логика. UI и утилита публикации — тонкие оболочки над ним.
 - **`Launcher.Publish`** — строит раскладку сайта из папки сборки.
 - **`tools/publish.ps1`** — вызывает `Launcher.Publish` и синхронизирует раскладку с хостингом.
-- **`Launcher.App`** (WPF, .NET Framework 4.8) и **установщик** (Inno Setup) — следующие этапы.
+- **`Launcher.App`** — WPF-окно на .NET Framework 4.8, §9.
+- **Установщик** (Inno Setup) — следующий этап.
 
 ## 2. Раскладка на сервере
 
@@ -158,8 +159,55 @@ installed.json    версия, exe и кэш хэшей установленн�
 | `LAUNCHER_SFTP_HOSTKEY` | отпечаток ключа сервера, `ssh-ed25519 255 …` (WinSCP показывает при первом входе) |
 | `LAUNCHER_SFTP_DIR` | папка на сервере, из которой раздаётся сайт; должна существовать |
 
-## 9. Не сделано
+## 9. Окно лаунчера
 
-- WPF-окно `Launcher.App` и установщик Inno Setup.
+`Launcher.App` разделён так же, как слой Game в PotteryBraker:
+
+- **`MainWindow`** — только рисует и поднимает события (`PlayRequested`, `SecondaryRequested`,
+  `OpenFolderRequested`, `VerifyRequested`). Методы `ShowActions`, `ShowProgress`, `ShowStatus`,
+  `ShowCover`, … решений не принимают.
+- **`LauncherController`** — вся логика: получает манифест, самообновляется, решает состояние через
+  `LaunchPolicy`, гоняет `GameUpdater`, запускает игру.
+- **`SpacedText`** — текст с разрядкой (tracking). В WPF нет `CharacterSpacing`, поэтому элемент
+  рисует каждый символ отдельным `FormattedText` со сдвигом `Spacing`.
+
+Раскладка повторяет макет: слева обложка, справа заголовок, «Играть» и вторая кнопка, внизу
+«Настройки», «Об игре» и версия игры. Шрифты — системные Segoe UI Light / Segoe UI, картинки в exe
+не вшиты: без скриншота с сервера слева тёплый градиент.
+
+Вторая кнопка меняет смысл по состоянию:
+
+| Состояние | Вторая кнопка |
+|---|---|
+| `NotInstalled` | «Скачать» |
+| `UpdateAvailable`, `UpdateRequired` | «Обновить» |
+| `OfflineInstalled`, `OfflineNotInstalled` | «Повторить» — заново запросить манифест |
+| `UpToDate` | скрыта |
+| идёт обновление | прогресс «23 / 56 МБ» заливкой; клик — отмена |
+
+- «Играть» запускает `game\<exe>` и закрывает лаунчер. Пока процесс игры жив, «Играть» и
+  обновление недоступны.
+- Скриншот и changelog из манифеста кэшируются в `cache\` под именем с версией; на старте
+  показывается самый свежий кэш, потом — скачанный.
+- «Настройки»: путь к игре, «Открыть папку», «Проверить файлы» — обновление с `verifyAll`,
+  которое хэширует все файлы заново, игнорируя кэш `installed.json`.
+- «Об игре»: описание, changelog, версия лаунчера.
+- Второй экземпляр лаунчера не запускается (именованный мьютекс `FloxLauncher-<GameId>`); после
+  самообновления новый процесс с `--after-update` ждёт мьютекс до 15 с.
+- Ошибки пишутся в `<корень установки>\launcher.log` (обрезается после 1 МБ).
+
+Адрес релиза вшивается при сборке: `dotnet build -p:LauncherReleaseUrl=https://…/`. Для отладки
+его и корень установки переопределяют переменные `FLOX_LAUNCHER_URL` (URL или локальная папка с
+раскладкой сайта) и `FLOX_LAUNCHER_ROOT`:
+
+```powershell
+./tools/publish.ps1 -BuildDir <сборка> -Version 0.0.10 -Exe PotteryBraker.exe -SiteDir $env:TEMP\site -NoUpload
+$env:FLOX_LAUNCHER_URL = "$env:TEMP\site"; $env:FLOX_LAUNCHER_ROOT = "$env:TEMP\root"
+./src/Launcher.App/bin/Debug/net48/FloxLauncher.exe
+```
+
+## 10. Не сделано
+
+- Установщик Inno Setup.
 - Чистка старых объектов на сервере: сегодня `objects/` только растёт.
 - Подпись exe: неподписанные `setup.exe` и лаунчер вызывают предупреждение SmartScreen.

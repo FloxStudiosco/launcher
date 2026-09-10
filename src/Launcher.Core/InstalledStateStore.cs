@@ -1,5 +1,4 @@
 using System.IO;
-using System.Text.Json;
 
 namespace FloxStudios.Launcher.Core;
 
@@ -12,10 +11,6 @@ public static class InstalledStateStore
         try
         {
             return LauncherJson.Deserialize<InstalledState>(File.ReadAllText(layout.StateFile));
-        }
-        catch (JsonException)
-        {
-            return null;
         }
         catch (InvalidDataException)
         {

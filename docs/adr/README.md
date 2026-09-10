@@ -21,3 +21,4 @@ ADR не правят задним числом — устаревшее реш�
 | [0002](0002-wpf-on-net-framework-48.md) | Окно — WPF на .NET Framework 4.8, логика — `netstandard2.0` |
 | [0003](0003-self-update-by-renaming-running-exe.md) | Самообновление — переименование запущенного exe, без bat-скрипта и отдельного апдейтера |
 | [0004](0004-mandatory-update-but-offline-play-allowed.md) | Обновление обязательное, но без сети можно играть в установленную версию |
+| [0005](0005-single-exe-core-linked-as-sources.md) | Лаунчер — один exe: Core компилируется в него исходниками, JSON — `DataContractJsonSerializer` |

@@ -15,7 +15,7 @@
 | `src/Launcher.Publish/` | Консольная утилита: превращает папку сборки игры в раскладку сайта (`objects/`, `media/`, `launcher/`, `manifest.json`). |
 | `tools/publish.ps1` | Собирает раскладку через `Launcher.Publish` и заливает её на хостинг по SFTP через WinSCP. |
 | `tests/Launcher.Tests/` | xUnit-тесты Core. |
-| `src/Launcher.App/` | WPF-окно на .NET Framework 4.8 — **ещё не написано**. |
+| `src/Launcher.App/` | WPF-окно на .NET Framework 4.8. Core компилируется внутрь, на выходе один `FloxLauncher.exe` (~85 КБ). |
 | `installer/` | Скрипт Inno Setup — **ещё не написан**. |
 
 ## Документация
