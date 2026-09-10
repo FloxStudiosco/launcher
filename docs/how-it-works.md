@@ -140,6 +140,9 @@ installed.json    версия, exe и кэш хэшей установленн�
     [-LauncherExe FloxLauncher.exe -LauncherVersion 1.0.2] [-SiteDir out/site] [-NoUpload]
 ```
 
+0. Скрипт сначала проверяет окружение: `dotnet` с установленным SDK (одного рантайма мало), а если
+   заливка не отключена `-NoUpload`, — WinSCP и все переменные `LAUNCHER_SFTP_*`. Любая нехватка
+   останавливает его до шага 1 с подсказкой, что поставить или задать.
 1. `Launcher.Publish` хэширует файлы сборки, сжимает в `out/site/objects/` только новые объекты,
    копирует медиа и exe лаунчера, пишет `manifest.json`.
 2. WinSCP синхронизирует `out/site` с сервером **без** `manifest.json` (сравнение по размеру —

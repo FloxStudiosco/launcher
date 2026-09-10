@@ -21,6 +21,40 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 $SiteDir = [System.IO.Path]::GetFullPath($SiteDir)
 
+function Find-WinScp {
+    $candidates = @(
+        (Join-Path ${env:ProgramFiles(x86)} 'WinSCP\WinSCP.com'),
+        (Join-Path $env:ProgramFiles 'WinSCP\WinSCP.com'),
+        (Join-Path $env:LOCALAPPDATA 'Programs\WinSCP\WinSCP.com')
+    )
+    foreach ($candidate in $candidates) {
+        if (Test-Path $candidate) { return $candidate }
+    }
+    $command = Get-Command 'WinSCP.com' -ErrorAction SilentlyContinue
+    if ($command) { return $command.Source }
+    return $null
+}
+
+function Assert-Prerequisites {
+    if (-not (Get-Command 'dotnet' -ErrorAction SilentlyContinue)) {
+        throw 'dotnet not found. Install the .NET 8 SDK: winget install Microsoft.DotNet.SDK.8'
+    }
+    $sdks = & dotnet --list-sdks
+    if (-not $sdks) {
+        throw 'Only the .NET runtime is installed, the SDK is missing. Install it: winget install Microsoft.DotNet.SDK.8'
+    }
+    if ($NoUpload) { return }
+
+    if (-not (Find-WinScp)) {
+        throw 'WinSCP.com not found. Install it: winget install WinSCP.WinSCP'
+    }
+    foreach ($pair in @(@('LAUNCHER_SFTP_HOST', $HostName), @('LAUNCHER_SFTP_USER', $UserName),
+                        @('LAUNCHER_SFTP_HOSTKEY', $HostKey), @('LAUNCHER_SFTP_DIR', $RemoteDir))) {
+        if (-not $pair[1]) { throw "$($pair[0]) is not set" }
+    }
+    if (-not $Password -and -not $PrivateKey) { throw 'Set LAUNCHER_SFTP_PASSWORD or LAUNCHER_SFTP_KEY' }
+}
+
 function Invoke-ReleaseBuilder {
     $arguments = @('--build', $BuildDir, '--site', $SiteDir, '--version', $Version, '--exe', $Exe)
     if ($MinVersion) { $arguments += @('--min-version', $MinVersion) }
@@ -33,27 +67,7 @@ function Invoke-ReleaseBuilder {
     if ($LASTEXITCODE -ne 0) { throw "launcher-publish failed with exit code $LASTEXITCODE" }
 }
 
-function Find-WinScp {
-    $candidates = @(
-        (Join-Path ${env:ProgramFiles(x86)} 'WinSCP\WinSCP.com'),
-        (Join-Path $env:ProgramFiles 'WinSCP\WinSCP.com'),
-        (Join-Path $env:LOCALAPPDATA 'Programs\WinSCP\WinSCP.com')
-    )
-    foreach ($candidate in $candidates) {
-        if (Test-Path $candidate) { return $candidate }
-    }
-    $command = Get-Command 'WinSCP.com' -ErrorAction SilentlyContinue
-    if ($command) { return $command.Source }
-    throw 'WinSCP.com not found. Install it: winget install WinSCP.WinSCP'
-}
-
 function Invoke-Upload {
-    foreach ($pair in @(@('LAUNCHER_SFTP_HOST', $HostName), @('LAUNCHER_SFTP_USER', $UserName),
-                        @('LAUNCHER_SFTP_HOSTKEY', $HostKey), @('LAUNCHER_SFTP_DIR', $RemoteDir))) {
-        if (-not $pair[1]) { throw "$($pair[0]) is not set" }
-    }
-    if (-not $Password -and -not $PrivateKey) { throw 'Set LAUNCHER_SFTP_PASSWORD or LAUNCHER_SFTP_KEY' }
-
     $remote = $RemoteDir.TrimEnd('/')
     $auth = if ($PrivateKey) { "-privatekey=""$PrivateKey""" } else { '-password=%1%' }
     $script = @(
@@ -81,6 +95,7 @@ function Invoke-Upload {
     }
 }
 
+Assert-Prerequisites
 Invoke-ReleaseBuilder
 if ($NoUpload) {
     Write-Host "Site prepared at $SiteDir (upload skipped)"
