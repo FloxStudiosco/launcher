@@ -21,7 +21,10 @@ binding redirect'ами.
   Строки и списки моделей лежат в nullable-полях, а геттеры отдают `""` / пустой список вместо
   `null` — отсутствующее в JSON поле не превращается в `NullReferenceException`.
 
-Итог: `FloxLauncher.exe` около 85 КБ, рядом только `.config` с `supportedRuntime`.
+Итог: `FloxLauncher.exe` около 85 КБ и больше ничего. `.config` с `supportedRuntime` не
+генерируется (`GenerateSupportedRuntime=false`): версия CLR и так записана в заголовке exe, а
+отличие только в том, что на машине без .NET Framework 4.8 Windows не предложит его поставить, и
+лаунчер упадёт при старте. Windows 10/11 с обновлениями несут 4.8 из коробки.
 
 ## Рассмотренные альтернативы
 

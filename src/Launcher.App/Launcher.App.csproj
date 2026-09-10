@@ -7,6 +7,7 @@
     <RootNamespace>FloxStudios.Launcher.App</RootNamespace>
     <AssemblyName>FloxLauncher</AssemblyName>
     <Version>0.1.0</Version>
+    <GenerateSupportedRuntime>false</GenerateSupportedRuntime>
     <LauncherReleaseUrl Condition="'$(LauncherReleaseUrl)' == ''"></LauncherReleaseUrl>
   </PropertyGroup>
 
