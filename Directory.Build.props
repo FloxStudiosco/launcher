@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Company>Flox Studios</Company>
+    <Product>Flox Launcher</Product>
+  </PropertyGroup>
+</Project>

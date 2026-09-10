@@ -1,0 +1,8 @@
+bin/
+obj/
+out/
+.vs/
+.idea/
+*.user
+TestResults/
+installer/Output/
