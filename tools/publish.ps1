@@ -7,7 +7,7 @@ param(
     [string]$Changelog,
     [string]$LauncherExe,
     [string]$LauncherVersion,
-    [string]$SiteDir = (Join-Path $PSScriptRoot '..\out\site'),
+    [string]$SiteDir,
     [string]$HostName = $env:LAUNCHER_SFTP_HOST,
     [string]$UserName = $env:LAUNCHER_SFTP_USER,
     [string]$Password = $env:LAUNCHER_SFTP_PASSWORD,
@@ -19,6 +19,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
+if (-not $SiteDir) { $SiteDir = Join-Path $repoRoot 'out\site' }
 $SiteDir = [System.IO.Path]::GetFullPath($SiteDir)
 
 function Find-WinScp {
