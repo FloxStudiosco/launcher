@@ -159,7 +159,7 @@ installed.json    версия, exe и кэш хэшей установленн�
 | `LAUNCHER_SFTP_HOST` | хост |
 | `LAUNCHER_SFTP_USER` | пользователь |
 | `LAUNCHER_SFTP_PASSWORD` | пароль (или `LAUNCHER_SFTP_KEY` — путь к `.ppk`) |
-| `LAUNCHER_SFTP_HOSTKEY` | отпечаток ключа сервера, `ssh-ed25519 255 …` (WinSCP показывает при первом входе) |
+| `LAUNCHER_SFTP_HOSTKEY` | отпечаток ключа сервера, `ssh-ed25519 255 …` (WinSCP показывает при первом входе); префикс `SHA256:` из формата PuTTY/OpenSSH скрипт убирает сам — WinSCP с ним отпечаток не принимает |
 | `LAUNCHER_SFTP_DIR` | папка на сервере, из которой раздаётся сайт; должна существовать |
 
 ## 9. Окно лаунчера

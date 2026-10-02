@@ -6,9 +6,10 @@
     <UseWPF>true</UseWPF>
     <RootNamespace>FloxStudios.Launcher.App</RootNamespace>
     <AssemblyName>FloxLauncher</AssemblyName>
+    <ApplicationIcon>Assets\KintsugiMaster.ico</ApplicationIcon>
     <Version>0.1.0</Version>
     <GenerateSupportedRuntime>false</GenerateSupportedRuntime>
-    <LauncherReleaseUrl Condition="'$(LauncherReleaseUrl)' == ''"></LauncherReleaseUrl>
+    <LauncherReleaseUrl Condition="'$(LauncherReleaseUrl)' == ''">https://floxstudios.duckdns.org:9443/kintsugi/</LauncherReleaseUrl>
   </PropertyGroup>
 
   <ItemGroup>

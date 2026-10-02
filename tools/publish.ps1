@@ -21,6 +21,7 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 if (-not $SiteDir) { $SiteDir = Join-Path $repoRoot 'out\site' }
 $SiteDir = [System.IO.Path]::GetFullPath($SiteDir)
+if ($HostKey) { $HostKey = $HostKey -replace 'SHA256:', '' }
 
 function Find-WinScp {
     $candidates = @(
